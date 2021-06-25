@@ -8,6 +8,11 @@ export type RootStackParamList = {
   NotFound: undefined;
 };
 
+export type AuthStackParamList = {
+  Register: undefined;
+  Login: undefined;
+};
+
 export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
@@ -29,4 +34,17 @@ export type TabThreeParamList = {
 
 export type TabFourParamList = {
   TabFourScreen: undefined;
+};
+
+export type AuthData = {
+  token: string;
+  email: string;
+  name?: string;
+};
+
+export type AuthContextData = {
+  authData?: AuthData;
+  loading: boolean;
+  login(): Promise<void>;
+  logout(): void;
 };

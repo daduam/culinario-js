@@ -2,10 +2,12 @@ import * as React from "react";
 
 import { Text, View } from "../components/Themed";
 
-export default function RegisterScreen() {
+const RegisterScreen = () => {
   return (
     <View>
       <Text>Register</Text>
     </View>
   );
-}
+};
+
+export default RegisterScreen;

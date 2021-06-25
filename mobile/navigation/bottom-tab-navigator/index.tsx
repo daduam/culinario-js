@@ -2,7 +2,7 @@
  * Learn more about createBottomTabNavigator:
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-
+// TODO refactor file by splitting into other files
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -45,6 +45,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="home-sharp" color={color} />
           ),
+          // TODO this could be a component for this and all other tabs
           tabBarLabel: ({ focused, color }) => (
             <View
               style={{
