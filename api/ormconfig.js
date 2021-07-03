@@ -12,4 +12,5 @@ module.exports = {
   synchronize: true,
   entities: ["dist/entities/*.js"],
   // migrations: ["dist/migrations/*.js"],
+  logging: true,
 };

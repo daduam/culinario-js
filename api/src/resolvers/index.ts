@@ -1,3 +1,3 @@
-import { HelloResolver } from "./HelloResolver";
+import { UserResolver } from "./UserResolver";
 
-export const resolvers = [HelloResolver] as const;
+export const resolvers = [UserResolver] as const;

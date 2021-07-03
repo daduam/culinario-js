@@ -15,15 +15,15 @@ export class User {
   id: number;
 
   @Field({ nullable: true })
-  @Column()
+  @Column({ nullable: true })
   name?: string;
 
   @Field()
   @Column({ unique: true })
   email: string;
 
-  @Field({ nullable: true })
-  @Column()
+  // @Field({ nullable: true })
+  @Column({ nullable: true })
   password?: string;
 
   // unclear how to handle phone numbers for now

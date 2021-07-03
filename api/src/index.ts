@@ -11,7 +11,7 @@ const bootstrap = async () => {
 
   try {
     const connection = await createConnection();
-    await connection.synchronize(true);
+    await connection.synchronize(false);
     console.log("connected to database");
   } catch (error) {
     console.error(error);
