@@ -13,6 +13,8 @@ import { isEmail } from "class-validator";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 
+const JWT_SECRET = "fdasfkjdkfjlasldkfjdskfl";
+
 @InputType()
 class RegisterInput {
   @Field()
@@ -23,6 +25,15 @@ class RegisterInput {
 
   @Field()
   confirmPassword?: string;
+}
+
+@InputType()
+class LoginInput {
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
 }
 
 @ObjectType()
@@ -36,8 +47,8 @@ class FieldError {
 
 @ObjectType()
 class DataResponse {
-  @Field(() => User)
-  user: User;
+  @Field(() => User, { nullable: true })
+  user?: User;
 
   @Field()
   token: string;
@@ -84,12 +95,38 @@ export class UserResolver {
       email,
       password: passwordHash,
     });
-    const token = jwt.sign(
-      { email: user.email, name: user.name },
-      "fdasfkjdkfjlasldkfjdskfl",
-      { expiresIn: "30 days" }
-    );
+    const token = jwt.sign({ email: user.email, name: user.name }, JWT_SECRET, {
+      expiresIn: "30 days",
+    });
     await getManager().save(user);
     return { data: { user, token } };
+  }
+
+  @Mutation(() => UserResponse)
+  async login(
+    @Arg("input") { email, password }: LoginInput
+  ): Promise<UserResponse> {
+    if (!isEmail(email)) {
+      return { errors: [{ field: "email", message: "invalid email" }] };
+    }
+    const user = await getManager().findOne(User, { email });
+    if (!user) {
+      return {
+        errors: [{ field: "email", message: "no user with this email" }],
+      };
+    } else {
+      const isValid = await bcrypt.compare(password, user.password!);
+      if (!isValid) {
+        return {
+          errors: [{ field: "password", message: "incorrect password" }],
+        };
+      }
+    }
+    const token = jwt.sign(
+      { email: user!.email, name: user!.name },
+      JWT_SECRET,
+      { expiresIn: "30 days" }
+    );
+    return { data: { token } };
   }
 }
