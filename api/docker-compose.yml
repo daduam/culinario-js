@@ -1,10 +1,21 @@
-version: "3.7"
+version: "3"
 services:
-  database:
+  db:
     image: postgres:12-alpine
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: culinario
+    volumes:
+      - ./pg-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+  web:
+    build: .
+    depends_on:
+      - db
+    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "dev"]
+    volumes:
+      - ./:/usr/api
+    ports:
+      - 8080:8080
