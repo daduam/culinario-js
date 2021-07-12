@@ -1,3 +1,10 @@
 dist
 node_modules
 pg-data
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+README.md
+.vscode

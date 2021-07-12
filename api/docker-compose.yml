@@ -16,6 +16,8 @@ services:
       - db
     command: ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "dev"]
     volumes:
-      - ./:/usr/api
+      - .:/usr/api
+      - /usr/api/node_modules
     ports:
       - 8080:8080
+      # TODO expose debug port
