@@ -1,18 +1,16 @@
+import { Link } from "@react-navigation/native";
 import * as React from "react";
 import {
-  Text,
-  View,
-  TextInput,
   KeyboardAvoidingView,
+  Text,
+  TextInput,
   TouchableNativeFeedback,
+  View,
 } from "react-native";
-import { Appbar } from "react-native-paper";
-import { Link, useRoute } from "@react-navigation/native";
-
 import Colors from "../constants/Colors";
+import layout from "../constants/Layout";
 import { useAuth } from "../hooks";
 import useColorScheme from "../hooks/useColorScheme";
-import layout from "../constants/Layout";
 
 const LoginScreen = () => {
   const { login } = useAuth();
@@ -28,22 +26,6 @@ const LoginScreen = () => {
         minHeight: layout.window.height,
       }}
     >
-      <Appbar.Header
-        style={{
-          backgroundColor: colors.background,
-          elevation: 0,
-        }}
-      >
-        <Appbar.Content
-          title="Login"
-          titleStyle={{
-            fontFamily: "playfair-display-bold",
-            color: colors.appbarHeaderTitle,
-            fontSize: 30,
-          }}
-        />
-      </Appbar.Header>
-
       {/* TODO just flex view. remove vertical margin */}
       {/* TODO tabbing through form fields https://thekevinscott.com/tabbing-through-input-fields/ */}
       <KeyboardAvoidingView

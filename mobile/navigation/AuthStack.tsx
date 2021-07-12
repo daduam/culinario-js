@@ -1,10 +1,10 @@
-import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-
+import * as React from "react";
+import AuthScreenHeader from "../components/AuthScreenHeader";
 import LoginScreen from "../screens/LoginScreen";
+import NotFoundScreen from "../screens/NotFoundScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import { AuthStackParamList } from "../types";
-import NotFoundScreen from "../screens/NotFoundScreen";
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
@@ -14,12 +14,18 @@ const AuthStack = () => {
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{
+          header: (props) => <AuthScreenHeader title="Login" {...props} />,
+        }}
       />
       <Stack.Screen
         name="Register"
         component={RegisterScreen}
-        options={{ headerShown: false }}
+        options={{
+          header: (props) => (
+            <AuthScreenHeader title="Create an account" {...props} />
+          ),
+        }}
       />
       <Stack.Screen
         name="NotFound"
