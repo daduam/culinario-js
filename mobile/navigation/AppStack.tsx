@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { RootStackParamList } from "../types";
-import BottomTabNavigator from "./bottom-tab-navigator";
+import BottomTabNavigator from "./bottomTabNavigation";
 import NotFoundScreen from "../screens/NotFoundScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();

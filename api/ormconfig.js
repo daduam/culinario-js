@@ -8,7 +8,10 @@ module.exports = {
   // okay since I'm working alone and still in dev
   // remember to setup migrations when necessary
   synchronize: true,
+  logging: true,
   entities: ["dist/entities/*.js"],
   // migrations: ["dist/migrations/*.js"],
-  logging: true,
+  // cli: {
+  //   migrationsDir: "src/migration",
+  // },
 };

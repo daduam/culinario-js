@@ -4,6 +4,7 @@
  * https://reactnavigation.org/docs/configuring-links
  */
 
+import { LinkingOptions } from "@react-navigation/native";
 import * as Linking from "expo-linking";
 
 // TODO understand and fix/extend whatever this file does
@@ -36,7 +37,9 @@ export default {
           },
         },
       },
+      Login: "auth/login",
+      Register: "auth/register",
       NotFound: "*",
     },
   },
-};
+} as LinkingOptions;

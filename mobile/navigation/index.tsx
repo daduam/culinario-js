@@ -10,7 +10,6 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 import { useAuth } from "../hooks";
-import { Text, View } from "../components/Themed";
 
 const Router = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
   const { authData, loading } = useAuth();

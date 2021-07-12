@@ -11,6 +11,7 @@ export type RootStackParamList = {
 export type AuthStackParamList = {
   Register: undefined;
   Login: undefined;
+  NotFound: undefined;
 };
 
 export type BottomTabParamList = {
@@ -45,6 +46,6 @@ export type AuthData = {
 export type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
-  login(): Promise<void>;
+  login(email: string, password: string): Promise<void>;
   logout(): void;
 };

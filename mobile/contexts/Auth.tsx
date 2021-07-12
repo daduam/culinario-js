@@ -31,7 +31,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
-  const login = async () => {
+  const login = async (email: string, password: string) => {
     // TODO call some authService that interacts with backend
     // _authData = await authService.login(email, password);
     // or use graphql mutation

@@ -1,5 +1,7 @@
 const tintColorLight = "#cd9379";
 const tintColorDark = "#fff";
+const textColor = "#262525";
+const inputLabelColor = "#999";
 
 export default {
   light: {
@@ -8,6 +10,9 @@ export default {
     tint: tintColorLight,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
+    appbarHeaderTitle: textColor,
+    inputText: textColor,
+    inputLabel: inputLabelColor,
   },
   dark: {
     text: "#fff",
@@ -15,5 +20,8 @@ export default {
     tint: tintColorDark,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,
+    appbarHeaderTitle: textColor,
+    inputText: textColor,
+    inputLabel: inputLabelColor,
   },
 };

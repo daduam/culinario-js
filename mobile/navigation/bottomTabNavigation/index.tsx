@@ -1,7 +1,3 @@
-/**
- * Learn more about createBottomTabNavigator:
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
 // TODO refactor file by splitting into other files
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -10,19 +6,17 @@ import * as React from "react";
 
 import Colors from "../../constants/Colors";
 import useColorScheme from "../../hooks/useColorScheme";
-import TabOneScreen from "../../screens/TabOneScreen";
-import TabTwoScreen from "../../screens/TabTwoScreen";
-import TabThreeScreen from "../../screens/TabThreeScreen";
 import TabFourScreen from "../../screens/TabFourScreen";
+import TabOneScreen from "../../screens/TabOneScreen";
+import TabThreeScreen from "../../screens/TabThreeScreen";
+import TabTwoScreen from "../../screens/TabTwoScreen";
 import {
   BottomTabParamList,
-  TabOneParamList,
-  TabTwoParamList,
-  TabThreeParamList,
   TabFourParamList,
+  TabOneParamList,
+  TabThreeParamList,
+  TabTwoParamList,
 } from "../../types";
-import { View } from "react-native";
-import { Text } from "react-native";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -43,20 +37,7 @@ export default function BottomTabNavigator() {
         component={TabOneNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="home-sharp" color={color} />
-          ),
-          // TODO this could be a component for this and all other tabs
-          tabBarLabel: ({ focused, color }) => (
-            <View
-              style={{
-                borderBottomColor: focused
-                  ? Colors[colorScheme].tint
-                  : Colors[colorScheme].background,
-                borderBottomWidth: 2,
-              }}
-            >
-              <Text style={{ color, fontSize: 10 }}>Feed</Text>
-            </View>
+            <TabBarIcon name="home-outline" color={color} />
           ),
         }}
       />
@@ -68,18 +49,6 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="heart-outline" color={color} />
           ),
-          tabBarLabel: ({ focused, color }) => (
-            <View
-              style={{
-                borderBottomColor: focused
-                  ? Colors[colorScheme].tint
-                  : Colors[colorScheme].background,
-                borderBottomWidth: 2,
-              }}
-            >
-              <Text style={{ color, fontSize: 10 }}>Favorites</Text>
-            </View>
-          ),
         }}
       />
 
@@ -90,18 +59,6 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="list-outline" color={color} />
           ),
-          tabBarLabel: ({ focused, color }) => (
-            <View
-              style={{
-                borderBottomColor: focused
-                  ? Colors[colorScheme].tint
-                  : Colors[colorScheme].background,
-                borderBottomWidth: 2,
-              }}
-            >
-              <Text style={{ color, fontSize: 10 }}>Shopping List</Text>
-            </View>
-          ),
         }}
       />
 
@@ -111,18 +68,6 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="settings-outline" color={color} />
-          ),
-          tabBarLabel: ({ focused, color }) => (
-            <View
-              style={{
-                borderBottomColor: focused
-                  ? Colors[colorScheme].tint
-                  : Colors[colorScheme].background,
-                borderBottomWidth: 2,
-              }}
-            >
-              <Text style={{ color, fontSize: 10 }}>Settings</Text>
-            </View>
           ),
         }}
       />
