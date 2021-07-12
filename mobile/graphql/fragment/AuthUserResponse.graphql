@@ -1,0 +1,11 @@
+fragment AuthUserResponse on UserResponse {
+    errors {
+      ...RegularError
+    }
+    data {
+      user {
+        ...RegularUser
+      }
+      token
+    }
+}
