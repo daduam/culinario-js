@@ -1,23 +1,32 @@
 import { Link } from "@react-navigation/native";
 import * as React from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Text,
   TextInput,
   TouchableNativeFeedback,
   View,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import Colors from "../constants/Colors";
 import layout from "../constants/Layout";
+import { useRegisterMutation } from "../generated/graphql";
 import { useAuth } from "../hooks";
 import useColorScheme from "../hooks/useColorScheme";
 
+type RegisterFormErrors = Record<string, string>;
+
 const RegisterScreen = () => {
-  const { login } = useAuth();
   const colors = Colors[useColorScheme()];
-  const [email, setEmail] = React.useState<string>();
-  const [password, setPassword] = React.useState<string>();
-  const [confirmPassword, setConfirmPassword] = React.useState<string>();
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [confirmPassword, setConfirmPassword] = React.useState<string>("");
+  const { setLoginToken } = useAuth();
+  const [register] = useRegisterMutation();
+  const [errors, setErrors] = React.useState<RegisterFormErrors>();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const inputs: Record<string, TextInput | null> = {};
 
   return (
     // TODO move all forms to components/forms
@@ -27,7 +36,6 @@ const RegisterScreen = () => {
         minHeight: layout.window.height,
       }}
     >
-      {/* TODO just flex view. remove vertical margin */}
       {/* TODO tabbing through form fields https://thekevinscott.com/tabbing-through-input-fields/ */}
       <KeyboardAvoidingView
         behavior="padding"
@@ -43,7 +51,22 @@ const RegisterScreen = () => {
           </Text>
           <TextInput
             value={email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => {
+              setEmail(text);
+              const fieldErrors = { ...errors };
+              if (fieldErrors["email"]) {
+                delete fieldErrors["email"];
+                setErrors(fieldErrors);
+              }
+            }}
+            ref={(inputRef) => {
+              inputs["email"] = inputRef;
+            }}
+            onSubmitEditing={() => {
+              inputs["password"]?.focus();
+            }}
+            blurOnSubmit={false}
+            returnKeyType="next"
             textContentType="emailAddress"
             keyboardType="email-address"
             style={{
@@ -53,6 +76,11 @@ const RegisterScreen = () => {
               color: colors.inputText,
             }}
           />
+          {errors?.email && (
+            <Text style={{ color: colors.tint, textTransform: "lowercase" }}>
+              {errors.email}
+            </Text>
+          )}
         </View>
 
         <View style={{ marginBottom: 40 }}>
@@ -61,7 +89,22 @@ const RegisterScreen = () => {
           </Text>
           <TextInput
             value={password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => {
+              setPassword(text);
+              const fieldErrors = { ...errors };
+              if (fieldErrors["password"]) {
+                delete fieldErrors["password"];
+                setErrors(fieldErrors);
+              }
+            }}
+            ref={(inputRef) => {
+              inputs["password"] = inputRef;
+            }}
+            onSubmitEditing={() => {
+              inputs["password"]?.focus();
+            }}
+            blurOnSubmit={false}
+            returnKeyType="next"
             secureTextEntry
             textContentType="password"
             style={{
@@ -73,6 +116,11 @@ const RegisterScreen = () => {
               letterSpacing: 5,
             }}
           />
+          {errors?.password && (
+            <Text style={{ color: colors.tint, textTransform: "lowercase" }}>
+              {errors.password}
+            </Text>
+          )}
         </View>
 
         <View style={{ marginBottom: 40 }}>
@@ -81,7 +129,18 @@ const RegisterScreen = () => {
           </Text>
           <TextInput
             value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
+            onChangeText={(text) => {
+              setConfirmPassword(text);
+              const fieldErrors = { ...errors };
+              if (fieldErrors["confirmPassword"]) {
+                delete fieldErrors["confirmPassword"];
+                setErrors(fieldErrors);
+              }
+            }}
+            ref={(inputRef) => {
+              inputs["confirmPassword"] = inputRef;
+            }}
+            returnKeyType="done"
             secureTextEntry
             textContentType="password"
             style={{
@@ -93,16 +152,39 @@ const RegisterScreen = () => {
               letterSpacing: 5,
             }}
           />
+          {errors?.confirmPassword && (
+            <Text style={{ color: colors.tint, textTransform: "lowercase" }}>
+              {errors.confirmPassword}
+            </Text>
+          )}
         </View>
 
         <TouchableNativeFeedback
           onPress={async () => {
-            if (!email || !password) {
-              console.log(email, password);
-              return;
+            Keyboard.dismiss();
+            setIsSubmitting(true);
+            const response = await register({
+              variables: {
+                input: {
+                  email,
+                  password,
+                  confirmPassword,
+                },
+              },
+            });
+            // TODO general error situations. server doesn't seem to handle them
+            if (response.data?.register.errors) {
+              const formErrors: RegisterFormErrors = {};
+              response.data.register.errors.map(({ field, message }) => {
+                formErrors[field] = message;
+              });
+              setErrors(formErrors);
+              setIsSubmitting(false);
+            } else if (response.data?.register.data?.token) {
+              await setLoginToken(response.data.register.data.token, email);
             }
-            await login(email, password);
           }}
+          disabled={isSubmitting}
         >
           <View
             style={{
@@ -114,9 +196,15 @@ const RegisterScreen = () => {
               elevation: 1,
             }}
           >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-              Register
-            </Text>
+            {isSubmitting ? (
+              <ActivityIndicator size="small" color={colors.background} />
+            ) : (
+              <Text
+                style={{ color: "white", fontSize: 16, fontWeight: "bold" }}
+              >
+                Register
+              </Text>
+            )}
           </View>
         </TouchableNativeFeedback>
 

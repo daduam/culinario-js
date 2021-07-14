@@ -1,24 +1,34 @@
 import { Link } from "@react-navigation/native";
 import * as React from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Text,
   TextInput,
   TouchableNativeFeedback,
   View,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import Colors from "../constants/Colors";
 import layout from "../constants/Layout";
+import { useLoginMutation } from "../generated/graphql";
 import { useAuth } from "../hooks";
 import useColorScheme from "../hooks/useColorScheme";
-import { useLoginMutation } from "../generated/graphql";
+
+// TODO server FieldError uses type String! for field key
+// need to change that to use this union for field
+// type LoginFormErrors = Record<"email" | "password", string>;
+type LoginFormErrors = Record<string, string>;
 
 const LoginScreen = () => {
-  const { login } = useAuth();
+  const { setLoginToken } = useAuth();
   const colors = Colors[useColorScheme()];
-  const [email, setEmail] = React.useState<string>();
-  const [password, setPassword] = React.useState<string>();
-  const [loginMutation] = useLoginMutation();
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [login] = useLoginMutation();
+  const [errors, setErrors] = React.useState<LoginFormErrors>();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const inputs: Record<string, TextInput | null> = {};
 
   return (
     // TODO move all forms to components/forms
@@ -28,7 +38,6 @@ const LoginScreen = () => {
         minHeight: layout.window.height,
       }}
     >
-      {/* TODO just flex view. remove vertical margin */}
       {/* TODO tabbing through form fields https://thekevinscott.com/tabbing-through-input-fields/ */}
       <KeyboardAvoidingView
         behavior="padding"
@@ -44,7 +53,22 @@ const LoginScreen = () => {
           </Text>
           <TextInput
             value={email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => {
+              setEmail(text);
+              const fieldErrors = { ...errors };
+              if (fieldErrors["email"]) {
+                delete fieldErrors["email"];
+                setErrors(fieldErrors);
+              }
+            }}
+            ref={(input) => {
+              inputs["email"] = input;
+            }}
+            onSubmitEditing={() => {
+              inputs["password"]?.focus();
+            }}
+            blurOnSubmit={false}
+            returnKeyType={"next"}
             textContentType="emailAddress"
             keyboardType="email-address"
             style={{
@@ -54,6 +78,11 @@ const LoginScreen = () => {
               color: colors.inputText,
             }}
           />
+          {errors?.email && (
+            <Text style={{ color: colors.tint, textTransform: "lowercase" }}>
+              {errors.email}
+            </Text>
+          )}
         </View>
 
         <View style={{ marginBottom: 40 }}>
@@ -62,28 +91,42 @@ const LoginScreen = () => {
           </Text>
           <TextInput
             value={password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={(text) => {
+              setPassword(text);
+              const fieldErrors = { ...errors };
+              if (fieldErrors["password"]) {
+                delete fieldErrors["password"];
+                setErrors(fieldErrors);
+              }
+            }}
+            ref={(input) => {
+              inputs["password"] = input;
+            }}
+            returnKeyType={"done"}
             secureTextEntry
             textContentType="password"
             style={{
               borderBottomColor: "#e9e9e9",
               borderBottomWidth: 2,
               fontSize: 18,
-              // change with password visible
+              // change with password visible icon button
               fontWeight: "bold",
               letterSpacing: 5,
             }}
           />
+          {errors?.password && (
+            <Text style={{ color: colors.tint, textTransform: "lowercase" }}>
+              {errors.password}
+            </Text>
+          )}
         </View>
 
         <TouchableNativeFeedback
           onPress={async () => {
-            if (!email || !password) {
-              console.log(email, password);
-              return;
-            }
-            // login(email, password);
-            const response = await loginMutation({
+            Keyboard.dismiss();
+            setIsSubmitting(true);
+            // TODO client side validation
+            const response = await login({
               variables: {
                 input: {
                   email,
@@ -91,8 +134,19 @@ const LoginScreen = () => {
                 },
               },
             });
-            console.log(response);
+            // TODO general error situations. server doesn't seem to handle them
+            if (response.data?.login.errors) {
+              const formErrors: LoginFormErrors = {};
+              response.data.login.errors.map(({ field, message }) => {
+                formErrors[field] = message;
+              });
+              setErrors(formErrors);
+              setIsSubmitting(false);
+            } else if (response.data?.login.data?.token) {
+              await setLoginToken(response.data?.login.data.token, email);
+            }
           }}
+          disabled={isSubmitting}
         >
           <View
             style={{
@@ -104,9 +158,15 @@ const LoginScreen = () => {
               elevation: 1,
             }}
           >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-              Login
-            </Text>
+            {isSubmitting ? (
+              <ActivityIndicator size="small" color={colors.background} />
+            ) : (
+              <Text
+                style={{ color: "white", fontSize: 16, fontWeight: "bold" }}
+              >
+                Login
+              </Text>
+            )}
           </View>
         </TouchableNativeFeedback>
 

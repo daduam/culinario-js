@@ -1,18 +1,17 @@
-import "react-native-gesture-handler";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { AuthProvider } from "./contexts/Auth";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Router from "./navigation";
-import { AuthProvider } from "./contexts/Auth";
-import config from "./app.config";
 
 const client = new ApolloClient({
-  uri: config.extra.graphqlEndpoint,
+  uri: Constants.manifest.extra?.graphqlEndpoint,
   cache: new InMemoryCache(),
 });
 

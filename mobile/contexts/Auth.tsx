@@ -1,6 +1,5 @@
-import * as React from "react";
 import * as SecureStore from "expo-secure-store";
-
+import * as React from "react";
 import { AuthContextData, AuthData } from "../types";
 
 export const AuthContext = React.createContext<AuthContextData>(
@@ -31,30 +30,24 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   };
 
-  const login = async (email: string, password: string) => {
-    // TODO call some authService that interacts with backend
-    // _authData = await authService.login(email, password);
-    // or use graphql mutation
-    const _authData: AuthData = {
-      token: "jfklajdsfojewafajdsklfjdsaklf",
-      email: "hi@example.com",
-      name: "Example Hi",
-    };
+  const setLoginToken = async (token: string, email: string) => {
+    const _authData: AuthData = { token, email };
 
     setAuthData(_authData);
 
     await SecureStore.setItemAsync(AUTH_DATA_KEY, JSON.stringify(_authData));
   };
 
-  const logout = async () => {
-    // TODO call some authService to invalidate login token
+  const removeLoginToken = async () => {
     setAuthData(undefined);
 
     await SecureStore.deleteItemAsync(AUTH_DATA_KEY);
   };
 
   return (
-    <AuthContext.Provider value={{ authData, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ authData, loading, setLoginToken, removeLoginToken }}
+    >
       {children}
     </AuthContext.Provider>
   );

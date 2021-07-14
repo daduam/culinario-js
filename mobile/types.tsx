@@ -40,12 +40,11 @@ export type TabFourParamList = {
 export type AuthData = {
   token: string;
   email: string;
-  name?: string;
 };
 
 export type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
-  login(email: string, password: string): Promise<void>;
-  logout(): void;
+  setLoginToken(token: string, email: string): Promise<void>;
+  removeLoginToken(): void;
 };

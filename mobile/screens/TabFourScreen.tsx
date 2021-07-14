@@ -1,12 +1,11 @@
 import * as React from "react";
 import { Button, StyleSheet } from "react-native";
-
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { useAuth } from "../hooks";
 
 export default function TabFourScreen() {
-  const { logout } = useAuth();
+  const { removeLoginToken } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -17,7 +16,7 @@ export default function TabFourScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
       <EditScreenInfo path="/screens/TabFourScreen.tsx" />
-      <Button title="Logout" onPress={logout} />
+      <Button title="Logout" onPress={removeLoginToken} />
     </View>
   );
 }
