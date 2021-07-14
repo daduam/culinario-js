@@ -11,12 +11,14 @@ import Colors from "../constants/Colors";
 import layout from "../constants/Layout";
 import { useAuth } from "../hooks";
 import useColorScheme from "../hooks/useColorScheme";
+import { useLoginMutation } from "../generated/graphql";
 
 const LoginScreen = () => {
   const { login } = useAuth();
   const colors = Colors[useColorScheme()];
   const [email, setEmail] = React.useState<string>();
   const [password, setPassword] = React.useState<string>();
+  const [loginMutation] = useLoginMutation();
 
   return (
     // TODO move all forms to components/forms
@@ -80,7 +82,16 @@ const LoginScreen = () => {
               console.log(email, password);
               return;
             }
-            await login(email, password);
+            // login(email, password);
+            const response = await loginMutation({
+              variables: {
+                input: {
+                  email,
+                  password,
+                },
+              },
+            });
+            console.log(response);
           }}
         >
           <View
