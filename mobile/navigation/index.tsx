@@ -1,27 +1,17 @@
 import {
-  NavigationContainer,
-  DefaultTheme,
   DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
 } from "@react-navigation/native";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
-
-import LinkingConfiguration from "./LinkingConfiguration";
+import { useAuth } from "../hooks";
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
-import { useAuth } from "../hooks";
+import LinkingConfiguration from "./LinkingConfiguration";
 
 const Router = ({ colorScheme }: { colorScheme: ColorSchemeName }) => {
-  const { authData, loading } = useAuth();
-
-  // TODO fix this. loads forever
-  // if (loading) {
-  //   return (
-  //     <View>
-  //       <Text>Loading</Text>
-  //     </View>
-  //   );
-  // }
+  const { authData } = useAuth();
 
   return (
     <NavigationContainer

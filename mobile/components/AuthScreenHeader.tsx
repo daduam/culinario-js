@@ -2,7 +2,7 @@ import { StackHeaderProps } from "@react-navigation/stack";
 import * as React from "react";
 import { Appbar } from "react-native-paper";
 import Colors from "../constants/Colors";
-import useColorScheme from "../hooks/useColorScheme";
+import { useColorScheme } from "../hooks";
 
 const AuthScreenHeader = ({
   title,

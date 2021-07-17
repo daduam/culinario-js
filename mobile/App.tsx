@@ -6,8 +6,8 @@ import "react-native-gesture-handler";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AuthProvider } from "./contexts/Auth";
-import useCachedResources from "./hooks/useCachedResources";
-import useColorScheme from "./hooks/useColorScheme";
+import { useCachedResources } from "./hooks";
+import { useColorScheme } from "./hooks";
 import Router from "./navigation";
 
 const client = new ApolloClient({

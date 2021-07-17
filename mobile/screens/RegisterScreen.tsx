@@ -12,8 +12,7 @@ import { ActivityIndicator } from "react-native-paper";
 import Colors from "../constants/Colors";
 import layout from "../constants/Layout";
 import { useRegisterMutation } from "../generated/graphql";
-import { useAuth } from "../hooks";
-import useColorScheme from "../hooks/useColorScheme";
+import { useAuth, useColorScheme } from "../hooks";
 
 type RegisterFormErrors = Record<string, string>;
 

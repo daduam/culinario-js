@@ -7,13 +7,12 @@ import {
   TextInput,
   TouchableNativeFeedback,
   View,
+  ActivityIndicator,
 } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import Colors from "../constants/Colors";
 import layout from "../constants/Layout";
 import { useLoginMutation } from "../generated/graphql";
-import { useAuth } from "../hooks";
-import useColorScheme from "../hooks/useColorScheme";
+import { useAuth, useColorScheme } from "../hooks";
 
 // TODO server FieldError uses type String! for field key
 // need to change that to use this union for field
@@ -38,7 +37,6 @@ const LoginScreen = () => {
         minHeight: layout.window.height,
       }}
     >
-      {/* TODO tabbing through form fields https://thekevinscott.com/tabbing-through-input-fields/ */}
       <KeyboardAvoidingView
         behavior="padding"
         style={{
@@ -67,7 +65,7 @@ const LoginScreen = () => {
             onSubmitEditing={() => {
               inputs["password"]?.focus();
             }}
-            blurOnSubmit={false}
+            blurOnSubmit={false} // change with password visible icon button
             returnKeyType={"next"}
             textContentType="emailAddress"
             keyboardType="email-address"
