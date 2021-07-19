@@ -18,7 +18,7 @@ export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   TabThree: undefined;
-  TabFour: undefined;
+  Account: undefined;
 };
 
 export type TabOneParamList = {
@@ -33,8 +33,8 @@ export type TabThreeParamList = {
   TabThreeScreen: undefined;
 };
 
-export type TabFourParamList = {
-  TabFourScreen: undefined;
+export type AccountParamList = {
+  AccountScreen: undefined;
 };
 
 export type AuthData = {
@@ -45,6 +45,7 @@ export type AuthData = {
 export type AuthContextData = {
   authData?: AuthData;
   loading: boolean;
+  // TODO rename to storeLoginToken?
   setLoginToken(token: string, email: string): Promise<void>;
   removeLoginToken(): void;
 };

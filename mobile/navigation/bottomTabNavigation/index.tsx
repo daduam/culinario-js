@@ -5,17 +5,16 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import Colors from "../../constants/Colors";
 import { useColorScheme } from "../../hooks";
-import TabFourScreen from "../../screens/TabFourScreen";
 import TabOneScreen from "../../screens/TabOneScreen";
 import TabThreeScreen from "../../screens/TabThreeScreen";
 import TabTwoScreen from "../../screens/TabTwoScreen";
 import {
   BottomTabParamList,
-  TabFourParamList,
   TabOneParamList,
   TabThreeParamList,
   TabTwoParamList,
 } from "../../types";
+import AccountTabNavigator from "./AccountTabNavigator";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -24,7 +23,8 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      // TODO change back to Home
+      initialRouteName="Account"
       tabBarOptions={{
         activeTintColor: Colors[colorScheme].tint,
         tabStyle: { backgroundColor: Colors[colorScheme].background },
@@ -62,8 +62,8 @@ export default function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
-        name="TabFour"
-        component={TabFourNavigator}
+        name="Account"
+        component={AccountTabNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="settings-outline" color={color} />
@@ -125,19 +125,5 @@ function TabThreeNavigator() {
         options={{ headerTitle: "Tab Three Title" }}
       />
     </TabThreeStack.Navigator>
-  );
-}
-
-const TabFourStack = createStackNavigator<TabFourParamList>();
-
-function TabFourNavigator() {
-  return (
-    <TabFourStack.Navigator>
-      <TabFourStack.Screen
-        name="TabFourScreen"
-        component={TabFourScreen}
-        options={{ headerTitle: "Tab Four Title" }}
-      />
-    </TabFourStack.Navigator>
   );
 }

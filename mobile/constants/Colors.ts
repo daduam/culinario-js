@@ -10,7 +10,7 @@ export default {
     tint: tintColorLight,
     tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
-    appbarHeaderTitle: textColor,
+    appbarHeaderTitle: "#705d4f",
     inputText: textColor,
     inputLabel: inputLabelColor,
   },
