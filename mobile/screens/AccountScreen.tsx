@@ -83,17 +83,23 @@ const AccountScreen = ({ navigation }: AccountScreenProps) => {
           text="Home"
           icon="home-outline"
           onPress={() => {
-            navigation.navigate("TabOne");
+            navigation.navigate("Feeds");
           }}
         />
 
-        <AccountScreenButton text="Saved recipes" icon="bookmark-outline" />
+        <AccountScreenButton
+          text="Saved recipes"
+          icon="bookmark-outline"
+          onPress={() => {
+            navigation.navigate("Favorites");
+          }}
+        />
 
         <AccountScreenButton
           text="View shopping list"
           icon="list-circle-outline"
           onPress={() => {
-            navigation.navigate("TabThree");
+            navigation.navigate("ShoppingList");
           }}
         />
 

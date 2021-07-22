@@ -7,22 +7,22 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          Feeds: {
             screens: {
-              TabOneScreen: "one",
+              FeedsScreen: "feeds",
             },
           },
-          TabTwo: {
+          Favorites: {
             screens: {
-              TabTwoScreen: "two",
+              FavoritesScreen: "favorites",
             },
           },
-          TabThree: {
+          ShoppingList: {
             screens: {
-              TabThreeScreen: "three",
+              ShoppingListScreen: "shopping-list",
             },
           },
-          TabFour: {
+          Account: {
             screens: {
               AccountScreen: "account",
             },

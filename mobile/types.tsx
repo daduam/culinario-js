@@ -15,22 +15,22 @@ export type AuthStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
+  Feeds: undefined;
+  Favorites: undefined;
+  ShoppingList: undefined;
   Account: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
+export type FeedsParamList = {
+  FeedsScreen: undefined;
 };
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type FavoritesParamList = {
+  FavoritesScreen: undefined;
 };
 
-export type TabThreeParamList = {
-  TabThreeScreen: undefined;
+export type ShoppingListParamList = {
+  ShoppingListScreen: undefined;
 };
 
 export type AccountParamList = {
