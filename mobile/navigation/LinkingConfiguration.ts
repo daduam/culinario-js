@@ -24,7 +24,7 @@ export default {
           },
           TabFour: {
             screens: {
-              TabFourScreen: "four",
+              AccountScreen: "account",
             },
           },
         },

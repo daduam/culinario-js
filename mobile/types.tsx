@@ -47,5 +47,5 @@ export type AuthContextData = {
   loading: boolean;
   // TODO rename to storeLoginToken?
   setLoginToken(token: string, email: string): Promise<void>;
-  removeLoginToken(): void;
+  removeLoginToken(): Promise<void>;
 };

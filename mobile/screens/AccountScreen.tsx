@@ -1,19 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
 import Constants from "expo-constants";
 import * as React from "react";
 import {
-  FlatList,
   SafeAreaView,
+  ScrollView,
+  StyleProp,
   Text,
   TouchableNativeFeedback,
-  TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 import Colors from "../constants/Colors";
-import { useColorScheme } from "../hooks";
+import { useAuth, useColorScheme } from "../hooks";
+import { BottomTabParamList } from "../types";
 
-const AccountScreen = () => {
+type AccountScreenProps = {
+  navigation: StackNavigationProp<BottomTabParamList, "Account">;
+};
+
+const AccountScreen = ({ navigation }: AccountScreenProps) => {
   const colors = Colors[useColorScheme()];
+  const { removeLoginToken } = useAuth();
+
   return (
     <SafeAreaView
       style={{
@@ -69,23 +78,44 @@ const AccountScreen = () => {
         </View>
       </TouchableNativeFeedback>
 
-      <FlatList
-        data={
-          [
-            { text: "Home", icon: "home-outline" },
-            { text: "Settings", icon: "settings-outline" },
-            { text: "Saved", icon: "bookmark-outline" },
-            { text: "Shopping list", icon: "list-circle-outline" },
-            { text: "Create your own recipe", icon: "create-outline" },
-            { text: "Logout", icon: "alert-circle-outline" },
-          ] as AccountScreenButtonProps[]
-        }
-        keyExtractor={({ text }) => {
-          return text.toLowerCase().split(" ").join("-");
-        }}
-        renderItem={({ item }) => <AccountScreenButton {...item} />}
-        style={{ marginTop: 30 }}
-      />
+      <ScrollView style={{ marginTop: 10 }}>
+        <AccountScreenButton
+          text="Home"
+          icon="home-outline"
+          onPress={() => {
+            navigation.navigate("TabOne");
+          }}
+        />
+
+        <AccountScreenButton text="Saved recipes" icon="bookmark-outline" />
+
+        <AccountScreenButton
+          text="View shopping list"
+          icon="list-circle-outline"
+          onPress={() => {
+            navigation.navigate("TabThree");
+          }}
+        />
+
+        <AccountScreenButton
+          text="Create your own recipe"
+          icon="bookmark-outline"
+          style={{ borderBottomWidth: 1, borderBottomColor: colors.inputLabel }}
+        />
+
+        <AccountScreenButton
+          text="Update preferences"
+          icon="settings-outline"
+        />
+
+        <AccountScreenButton
+          text="Logout"
+          icon="alert-circle-outline"
+          onPress={async () => {
+            await removeLoginToken();
+          }}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -93,28 +123,30 @@ const AccountScreen = () => {
 type AccountScreenButtonProps = {
   text: string;
   icon: React.ComponentProps<typeof Ionicons>["name"];
+  style?: StyleProp<ViewStyle>;
+  onPress?: React.ComponentProps<typeof TouchableNativeFeedback>["onPress"];
 };
 
-const AccountScreenButton = ({ text, icon }: AccountScreenButtonProps) => {
+const AccountScreenButton = ({
+  text,
+  icon,
+  style,
+  onPress,
+}: AccountScreenButtonProps) => {
   const colors = Colors[useColorScheme()];
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        console.log(text);
-      }}
-      activeOpacity={0.7}
-    >
+    <TouchableNativeFeedback onPress={onPress}>
       <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 30,
-          marginVertical: 10,
-          paddingBottom: 10,
-          alignItems: "center",
-          borderBottomColor: colors.inputLabel,
-          borderBottomWidth: 2,
-        }}
+        style={[
+          style,
+          {
+            flexDirection: "row",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            alignItems: "center",
+          },
+        ]}
       >
         <Ionicons name={icon} size={20} color={colors.inputLabel} />
         <Text
@@ -128,13 +160,8 @@ const AccountScreenButton = ({ text, icon }: AccountScreenButtonProps) => {
         >
           {text}
         </Text>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={20}
-          color={colors.inputLabel}
-        />
       </View>
-    </TouchableOpacity>
+    </TouchableNativeFeedback>
   );
 };
 
