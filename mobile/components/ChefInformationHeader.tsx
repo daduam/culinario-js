@@ -1,14 +1,11 @@
 import { StackHeaderProps } from "@react-navigation/stack";
 import * as React from "react";
+import { Text, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import Colors from "../constants/Colors";
 import { useColorScheme } from "../hooks";
 
-const AuthScreenHeader = ({
-  title,
-  navigation,
-  previous,
-}: StackHeaderProps & { title: string }) => {
+const ChefInformationHeader = ({ navigation, previous }: StackHeaderProps) => {
   const colors = Colors[useColorScheme()];
 
   return (
@@ -18,17 +15,11 @@ const AuthScreenHeader = ({
         elevation: 0,
       }}
     >
-      {previous && <Appbar.BackAction onPress={navigation.goBack} />}
-      <Appbar.Content
-        title={title}
-        titleStyle={{
-          fontFamily: "playfair-display-bold",
-          color: colors.appbarHeaderTitle,
-          fontSize: 25,
-        }}
-      />
+      <View>
+        <Text>Custom</Text>
+      </View>
     </Appbar.Header>
   );
 };
 
-export default AuthScreenHeader;
+export default ChefInformationHeader;

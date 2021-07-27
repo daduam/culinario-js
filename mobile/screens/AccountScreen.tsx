@@ -13,15 +13,16 @@ import {
 } from "react-native";
 import Colors from "../constants/Colors";
 import { useAuth, useColorScheme } from "../hooks";
-import { BottomTabParamList } from "../types";
+import { AccountParamList, BottomTabParamList } from "../types";
 
 type AccountScreenProps = {
-  navigation: StackNavigationProp<BottomTabParamList, "Account">;
+  navigation: StackNavigationProp<BottomTabParamList & AccountParamList>;
 };
 
 const AccountScreen = ({ navigation }: AccountScreenProps) => {
   const colors = Colors[useColorScheme()];
   const { removeLoginToken } = useAuth();
+  // TODO add navigation params
 
   return (
     <SafeAreaView
@@ -32,7 +33,11 @@ const AccountScreen = ({ navigation }: AccountScreenProps) => {
       }}
     >
       {/* TODO this view could be a clickable header */}
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        onPress={() => {
+          navigation.navigate("ChefInformation");
+        }}
+      >
         <View
           style={{
             flexDirection: "row",
@@ -54,6 +59,7 @@ const AccountScreen = ({ navigation }: AccountScreenProps) => {
             style={{
               flexGrow: 1,
               paddingHorizontal: 10,
+              justifyContent: "center",
             }}
           >
             <Text
@@ -70,11 +76,13 @@ const AccountScreen = ({ navigation }: AccountScreenProps) => {
             </Text>
           </View>
           {/* TODO what to use for icons? AntDesign? */}
-          <Ionicons
-            name="chevron-forward-outline"
-            size={40}
-            color={colors.inputLabel}
-          />
+          <View style={{ justifyContent: "center" }}>
+            <Ionicons
+              name="chevron-forward-outline"
+              size={20}
+              color={colors.inputLabel}
+            />
+          </View>
         </View>
       </TouchableNativeFeedback>
 

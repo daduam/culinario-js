@@ -35,6 +35,7 @@ export type ShoppingListParamList = {
 
 export type AccountParamList = {
   AccountScreen: undefined;
+  ChefInformation: undefined;
 };
 
 export type AuthData = {
