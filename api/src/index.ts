@@ -1,10 +1,9 @@
-import "reflect-metadata";
-import express from "express";
 import { ApolloServer, ServerRegistration } from "apollo-server-express";
+import express from "express";
+import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-
-import { resolvers } from "./resolvers";
+import resolvers from "./resolvers";
 
 const bootstrap = async () => {
   const app = express();

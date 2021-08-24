@@ -1,3 +1,6 @@
+import { RecipeResolver } from "./RecipeResolver";
 import { UserResolver } from "./UserResolver";
 
-export const resolvers = [UserResolver] as const;
+const resolvers = [UserResolver, RecipeResolver] as const;
+
+export default resolvers;

@@ -1,40 +1,13 @@
-import { User } from "../entities/User";
-import {
-  Arg,
-  Field,
-  InputType,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-} from "type-graphql";
-import { getManager } from "typeorm";
-import { isEmail } from "class-validator";
 import * as bcrypt from "bcrypt";
+import { isEmail } from "class-validator";
 import * as jwt from "jsonwebtoken";
+import { Arg, Field, Mutation, ObjectType, Resolver } from "type-graphql";
+import { getManager } from "typeorm";
+import { User } from "../entities/User";
+import { LoginInput } from "./types/LoginInput";
+import { RegisterInput } from "./types/RegisterInput";
 
 const JWT_SECRET = "fdasfkjdkfjlasldkfjdskfl";
-
-@InputType()
-class RegisterInput {
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
-
-  @Field()
-  confirmPassword?: string;
-}
-
-@InputType()
-class LoginInput {
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
-}
 
 @ObjectType()
 class FieldError {
@@ -65,11 +38,6 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
-  @Query(() => String)
-  async hello(): Promise<string> {
-    return "hello world";
-  }
-
   @Mutation(() => UserResponse)
   async register(
     @Arg("input") { email, password, confirmPassword }: RegisterInput
